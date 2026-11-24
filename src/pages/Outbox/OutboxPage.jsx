@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import PageHeader from '../../components/layout/PageHeader';
 import { SendIcon } from '../../components/icons';
 import { OUTBOX_TABS, MOCK_OUTBOX } from '../../data/mockOutbox';
@@ -33,6 +33,7 @@ const STATUS_LABELS = {
 };
 
 export default function OutboxPage() {
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState('all');
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState([]);
@@ -64,6 +65,15 @@ export default function OutboxPage() {
 
   return (
     <div className="inbox-page outbox-page">
+      {location.state?.sentSuccess && (
+        <div className="outbox-success" role="status">
+          <span className="outbox-success__icon">✓</span>
+          <span>
+            <strong>Xat muvaffaqiyatli yuborildi</strong>
+            <small>Chiquvchi xatlar ro‘yxatiga qo‘shildi</small>
+          </span>
+        </div>
+      )}
       <div className="outbox-header">
         <PageHeader
           Icon={SendIcon}

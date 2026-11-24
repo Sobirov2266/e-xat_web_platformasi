@@ -1,8 +1,11 @@
 import { ShieldCheckIcon } from '../../components/icons';
+import { Link } from 'react-router-dom';
+import { SendIcon } from '../../components/icons';
+import { ROUTES } from '../../routes/paths';
 
 export default function HeroIllustration() {
   return (
-    <div className="hero-art" aria-hidden="true">
+    <div className="hero-art">
       <div className="hero-art__stage">
         <span className="hero-art__ring hero-art__ring--outer" />
         <span className="hero-art__ring hero-art__ring--middle" />
@@ -34,11 +37,17 @@ export default function HeroIllustration() {
         <span className="hero-art__dot hero-art__dot--c" />
       </div>
 
-      <div className="hero-art__badge">
-        <span className="hero-art__badge-icon">
-          <ShieldCheckIcon size={22} />
-        </span>
-        Xavfsiz yozishmalar
+      <div className="hero-art__actions">
+        <Link to={ROUTES.COMPOSE} className="hero-art__compose">
+          <SendIcon size={18} />
+          Yangi xat yozish
+        </Link>
+        <div className="hero-art__badge">
+          <span className="hero-art__badge-icon">
+            <ShieldCheckIcon size={22} />
+          </span>
+          Xavfsiz yozishmalar
+        </div>
       </div>
     </div>
   );

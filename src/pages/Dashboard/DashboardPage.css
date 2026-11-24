@@ -208,10 +208,45 @@
   background: #7cc9f7;
 }
 
-.hero-art__badge {
+.hero-art__actions {
   position: absolute;
   right: 60px;
   bottom: 44px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  pointer-events: auto;
+}
+
+.hero-art__compose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 248px;
+  height: 74px;
+  padding: 0 20px 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 14px;
+  background: var(--color-white);
+  box-shadow: 0 12px 28px rgba(4, 30, 80, 0.24);
+  color: #0a3a86;
+  font-size: 17px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.hero-art__compose:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(4, 30, 80, 0.32);
+}
+
+.hero-art__compose svg {
+  color: #1473e6;
+}
+
+.hero-art__badge {
   display: flex;
   align-items: center;
   gap: 14px;

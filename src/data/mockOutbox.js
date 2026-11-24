@@ -107,3 +107,23 @@ export const MOCK_OUTBOX = [
     status: 'draft',
   },
 ];
+
+export function addOutboxLetter({ recipient, subject, attachment = false }) {
+  const words = recipient.trim().split(/\s+/).filter(Boolean);
+  const initials = words
+    .slice(0, 2)
+    .map((word) => word.charAt(0))
+    .join('')
+    .toUpperCase();
+
+  MOCK_OUTBOX.unshift({
+    id: String(7345 + MOCK_OUTBOX.length),
+    initials: initials || 'YX',
+    recipient,
+    subject,
+    attachment,
+    sent: '24.11.2026',
+    deadline: '',
+    status: 'sent',
+  });
+}
