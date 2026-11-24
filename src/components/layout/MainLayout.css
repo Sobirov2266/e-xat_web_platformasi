@@ -20,6 +20,10 @@
   padding: 22px 32px 32px;
 }
 
+.page-header {
+  margin-bottom: 24px;
+}
+
 .app-layout--collapsed .app-layout__main {
   margin-left: 0;
 }

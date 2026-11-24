@@ -5,4 +5,9 @@ export const ROUTES = {
   INBOX: '/inbox',
   OUTBOX: '/outbox',
   CHAT: '/chat',
+  ATTACHMENT: '/attachment',
+  ORGANIZATION: '/organization',
+  ARCHIVE: '/archive',
+  REPORT: '/report',
+  SETTINGS: '/settings',
 };

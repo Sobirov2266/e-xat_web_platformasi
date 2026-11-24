@@ -7,6 +7,12 @@ import './Sidebar.css';
 
 const getLinkClass = ({ isActive }) => `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`;
 
+const SquareIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <rect x="3" y="3" width="18" height="18" rx="2" />
+  </svg>
+);
+
 export default function Sidebar({ onLogout, onNavigate }) {
   const [openGroupId, setOpenGroupId] = useState(null);
 
@@ -42,6 +48,7 @@ export default function Sidebar({ onLogout, onNavigate }) {
                   <div className="sidebar__sub">
                     {children.map((child) => (
                       <NavLink key={child.id} to={child.to} className={getLinkClass} onClick={onNavigate}>
+                        <SquareIcon />
                         <span className="sidebar__label">{child.label}</span>
                       </NavLink>
                     ))}

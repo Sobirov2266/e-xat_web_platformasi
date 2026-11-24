@@ -124,6 +124,23 @@
   padding-left: 30px;
 }
 
+.sidebar__sub .sidebar__link {
+  height: 38px;
+  padding: 0 12px 0 0;
+  font-size: 15px;
+}
+
+.sidebar__sub .sidebar__link svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: #9fb2c8;
+}
+
+.sidebar__sub .sidebar__link--active {
+  background: linear-gradient(90deg, #4cb5f5 0%, #5cc0ff 100%);
+}
+
 /* Chiqish */
 .sidebar__logout {
   display: flex;
