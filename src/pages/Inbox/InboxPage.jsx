@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import PageHeader from '../../components/layout/PageHeader';
 import { InboxIcon } from '../../components/icons';
 import { INBOX_TABS, MOCK_INBOX } from '../../data/mockInbox';
@@ -30,7 +31,10 @@ const STATUS_LABELS = {
 };
 
 export default function InboxPage() {
-  const [activeTab, setActiveTab] = useState('all');
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(() =>
+    location.state?.inboxTab === 'new' ? 'new' : 'all',
+  );
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);

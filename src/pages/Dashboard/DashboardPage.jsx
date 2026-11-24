@@ -11,7 +11,7 @@ import './DashboardPage.css';
 const STAT_CARDS = [
   { id: 'incoming', label: 'Jami kiruvchi xatlar', value: MOCK_STATS.incomingTotal, Icon: InboxIcon, color: 'green', to: ROUTES.INBOX },
   { id: 'outgoing', label: 'Jami chiquvchi xatlar', value: MOCK_STATS.outgoingTotal, Icon: SendIcon, color: 'blue', to: ROUTES.OUTBOX },
-  { id: 'new', label: 'Yangi xatlar', value: MOCK_STATS.unread, Icon: MailIcon, color: 'purple', to: ROUTES.INBOX },
+  { id: 'new', label: 'Yangi xatlar', value: MOCK_STATS.unread, Icon: MailIcon, color: 'purple', to: ROUTES.INBOX, state: { inboxTab: 'new' } },
 ];
 
 export default function DashboardPage() {
