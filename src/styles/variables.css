@@ -1,0 +1,22 @@
+:root {
+  --font-base: Arial, "Liberation Sans", Helvetica, sans-serif;
+
+  --color-primary: #0b6bdc;
+  --color-primary-light: #2aa7f5;
+  --color-navy: #0a2342;
+  --color-text: #0b1f3a;
+  --color-text-muted: #4a5a70;
+  --color-border: #e1e8f1;
+  --color-tint: #e6f1fc;
+  --color-white: #ffffff;
+
+  --transition: 0.2s ease;
+
+  --font-app: 'Inter', Arial, 'Liberation Sans', sans-serif;
+  --color-sidebar-top: #0b2b52;
+  --color-sidebar-bottom: #09233f;
+  --color-page-bg: #eaf3fc;
+  --color-danger: #ff6b84;
+  --sidebar-width: 288px;
+
+}

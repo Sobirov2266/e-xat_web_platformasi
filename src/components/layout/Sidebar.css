@@ -1,0 +1,153 @@
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-width);
+  padding: 25px 14px 20px;
+  background: linear-gradient(180deg, var(--color-sidebar-top) 0%, var(--color-sidebar-bottom) 100%);
+  color: var(--color-white);
+  transition: transform 0.25s ease;
+}
+
+/* Logotip */
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: 85px;
+  margin-bottom: 20px;
+  padding-left: 14px;
+}
+
+.sidebar__brand-icon {
+  flex: none;
+  width: 82px;
+  height: 82px;
+}
+
+.sidebar__brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar__brand-name {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.sidebar__brand-slogan {
+  font-size: 14px;
+  line-height: 16px;
+  color: #b9c8da;
+}
+
+/* Menyu */
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 41px;
+  padding: 0 14px 0 15px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: #dbe6f3;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
+  transition: var(--transition);
+}
+
+.sidebar__link svg {
+  flex: none;
+  color: #9fb2c8;
+}
+
+.sidebar__link:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.sidebar__link--active,
+.sidebar__link--active:hover {
+  background: linear-gradient(90deg, #34b6f6 0%, #3cc0fa 100%);
+  box-shadow: 0 6px 16px rgba(52, 182, 246, 0.3);
+  color: var(--color-white);
+  font-weight: 700;
+}
+
+.sidebar__link--active svg {
+  color: var(--color-white);
+}
+
+.sidebar__label {
+  flex: 1;
+}
+
+.sidebar__badge {
+  display: grid;
+  place-items: center;
+  min-width: 31px;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 10px;
+  background: #1fa2e6;
+  color: var(--color-white);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.sidebar__chevron {
+  transition: transform 0.2s ease;
+}
+
+.sidebar__chevron--open {
+  transform: rotate(180deg);
+}
+
+.sidebar__sub {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 6px;
+  padding-left: 30px;
+}
+
+/* Chiqish */
+.sidebar__logout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 46px;
+  margin-top: auto;
+  padding: 0 15px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--color-danger);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.sidebar__logout:hover {
+  background: rgba(255, 107, 132, 0.1);
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+  }
+}

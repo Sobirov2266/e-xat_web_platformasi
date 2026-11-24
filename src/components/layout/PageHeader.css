@@ -1,0 +1,32 @@
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.page-header__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #2b8cf0, #0a63d6);
+  box-shadow: 0 8px 18px rgba(11, 107, 220, 0.3);
+  color: var(--color-white);
+}
+
+.page-header__title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 34px;
+  color: var(--color-text);
+}
+
+.page-header__subtitle {
+  margin: 2px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #5f6f84;
+}

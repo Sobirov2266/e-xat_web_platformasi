@@ -1,0 +1,496 @@
+.login {
+  display: grid;
+  grid-template-columns: 57fr 43fr;
+  min-height: 100vh;
+}
+
+/* ============ CHAP TOMON (hero) ============ */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 89px 53px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 100% 0%, #d9eafb 0%, rgba(217, 234, 251, 0) 55%),
+    var(--color-white);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(11, 107, 220, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+.hero > * {
+  position: relative;
+}
+
+.hero__logo {
+  width: 400px;
+}
+
+.hero__content {
+  margin-top: 88px;
+  margin-bottom: 48px;
+}
+
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 48px;
+  padding: 0 22px 0 20px;
+  border: 1px solid #cfe2f8;
+  border-radius: 999px;
+  background: #e8f2fd;
+  color: var(--color-primary);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.hero__badge img {
+  width: 28px;
+  height: 28px;
+}
+
+.hero__title {
+  max-width: 780px;
+  margin: 22px 0 0;
+  font-size: clamp(40px, 3.34vw, 64px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-navy);
+}
+
+.hero__title-accent {
+  color: var(--color-primary);
+}
+
+.hero__description {
+  max-width: 660px;
+  margin: 24px 0 0;
+  font-size: 20px;
+  line-height: 34px;
+  color: var(--color-text-muted);
+}
+
+.hero__features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 17px;
+  margin: 42px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero__feature {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  height: 60px;
+  padding: 0 22px 0 24px;
+  border: 1px solid #dce6f2;
+  border-radius: 18px;
+  background: var(--color-white);
+  box-shadow: 0 4px 14px rgba(11, 35, 66, 0.05);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+.hero__feature svg {
+  color: var(--color-primary);
+}
+
+/* Ishlab chiquvchi kartasi */
+.developer {
+  display: flex;
+  align-items: center;
+  gap: 31px;
+  margin-top: auto;
+  min-height: 150px;
+  padding: 0 30px;
+  border: 1px solid #dfe8f3;
+  border-radius: 28px;
+  background: var(--color-white);
+  box-shadow: 0 18px 40px rgba(11, 35, 66, 0.08);
+}
+
+.developer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 32px;
+  border-right: 1px solid var(--color-border);
+}
+
+.developer__label {
+  font-size: 16px;
+  color: var(--color-text-muted);
+}
+
+.developer__logo {
+  width: 240px;
+}
+
+.developer__text {
+  flex: 1;
+  max-width: 250px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.42;
+  color: var(--color-navy);
+}
+
+.developer__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 50px;
+  margin-left: auto;
+  padding: 0 24px;
+  border-radius: 12px;
+  background: var(--color-navy);
+  color: var(--color-white);
+  font-size: 17px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.developer__link:hover {
+  background: #123560;
+}
+
+/* ============ O'NG TOMON (panel) ============ */
+.panel {
+  display: flex;
+  flex-direction: column;
+  padding: 41px 84px 24px;
+  color: var(--color-white);
+  background:
+    radial-gradient(ellipse at 100% 100%, rgba(11, 107, 220, 0.95) 0%, rgba(11, 107, 220, 0) 55%),
+    radial-gradient(ellipse at 0% 0%, #0f4a8a 0%, rgba(15, 74, 138, 0) 45%),
+    linear-gradient(180deg, #0b2d57 0%, #0a2342 55%, #0a2a52 100%);
+}
+
+.panel__top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.panel__center {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 24px 0;
+}
+
+.panel__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.panel__footer strong {
+  color: var(--color-white);
+}
+
+/* Til tanlash */
+.lang {
+  position: relative;
+}
+
+.lang__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 20px 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-white);
+  font-size: 16px;
+  font-weight: 700;
+  transition: var(--transition);
+}
+
+.lang__button:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.lang__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 10;
+  min-width: 100%;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border-radius: 16px;
+  background: var(--color-white);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+}
+
+.lang__option {
+  width: 100%;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.lang__option:hover {
+  background: #f1f6fc;
+}
+
+.lang__option--active {
+  color: var(--color-primary);
+}
+
+/* Kirish kartasi */
+.login-card {
+  width: min(564px, 100%);
+  padding: 53px 53px 40px;
+  border-radius: 40px;
+  background: var(--color-white);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  text-align: center;
+  color: var(--color-text);
+}
+
+.login-card__logo {
+  width: 314px;
+  margin: 0 auto;
+}
+
+.login-card__key {
+  display: grid;
+  place-items: center;
+  width: 106px;
+  height: 106px;
+  margin: 37px auto 0;
+  border: 1px solid #d3e5f9;
+  border-radius: 50%;
+  background: var(--color-tint);
+  color: var(--color-primary);
+}
+
+.login-card__title {
+  margin: 17px 0 0;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.login-card__subtitle {
+  margin: 7px 0 0;
+  font-size: 18px;
+  color: var(--color-text-muted);
+}
+
+.btn-login {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 65px;
+  margin-top: 28px;
+  border: 0;
+  border-radius: 16px;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  box-shadow: 0 14px 28px rgba(11, 107, 220, 0.35);
+  color: var(--color-white);
+  font-size: 20px;
+  font-weight: 700;
+  transition: var(--transition);
+}
+
+.btn-login:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.btn-login:active {
+  transform: none;
+}
+
+.login-card__help {
+  margin: 31px 0 0;
+  padding-top: 23px;
+  border-top: 1px solid #e6ecf4;
+  font-size: 17px;
+  color: #4b6c96;
+}
+
+.login-card__help a {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.login-card__help a:hover {
+  text-decoration: underline;
+}
+
+/* ============ Kalit tanlash modali ============ */
+.key-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.key-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 16px 18px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-white);
+  text-align: left;
+  transition: var(--transition);
+}
+
+.key-item:hover {
+  border-color: #9cc4f1;
+}
+
+.key-item--active {
+  border-color: var(--color-primary);
+  background: #f1f7fe;
+  box-shadow: 0 0 0 3px rgba(11, 107, 220, 0.12);
+}
+
+.key-item__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--color-tint);
+  color: var(--color-primary);
+}
+
+.key-item__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.key-item__name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.key-item__meta {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.key-item__radio {
+  position: relative;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #b7c6d9;
+  border-radius: 50%;
+}
+
+.key-item--active .key-item__radio {
+  border-color: var(--color-primary);
+}
+
+.key-item--active .key-item__radio::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+
+/* ============ Moslashuvchanlik ============ */
+@media (max-width: 1280px) {
+  .hero {
+    padding: 40px 48px;
+  }
+  .hero__content {
+    margin-top: 64px;
+  }
+  .panel {
+    padding: 32px 40px 24px;
+  }
+  .developer {
+    flex-wrap: wrap;
+    padding: 24px 30px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .login {
+    grid-template-columns: 1fr;
+  }
+  .panel {
+    min-height: 100vh;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 28px 20px;
+  }
+  .hero__logo {
+    width: 260px;
+  }
+  .hero__content {
+    margin-top: 40px;
+  }
+  .hero__description {
+    font-size: 17px;
+    line-height: 28px;
+  }
+  .developer__brand {
+    padding-right: 0;
+    border-right: 0;
+  }
+  .developer__link {
+    margin-left: 0;
+  }
+  .panel {
+    padding: 24px 16px 20px;
+  }
+  .login-card {
+    padding: 36px 24px 32px;
+    border-radius: 28px;
+  }
+  .login-card__logo {
+    width: 100%;
+    max-width: 280px;
+  }
+  .panel__footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}

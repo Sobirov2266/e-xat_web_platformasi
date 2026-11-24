@@ -1,0 +1,357 @@
+/* ============ Hero banner ============ */
+.hero-banner {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  min-height: 468px;
+  margin-top: 22px;
+  padding: 57px 60px 68px;
+  overflow: hidden;
+  border-radius: 32px;
+  color: var(--color-white);
+  background:
+    radial-gradient(ellipse at 88% 100%, rgba(18, 130, 244, 0.95) 0%, rgba(18, 130, 244, 0) 60%),
+    linear-gradient(105deg, #0a3984 0%, #0a47a0 55%, #0b5cc0 100%);
+}
+
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 45%, #000 100%);
+  mask-image: linear-gradient(90deg, transparent 45%, #000 100%);
+  pointer-events: none;
+}
+
+.hero-banner__content {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+}
+
+.hero-banner__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 33px;
+  padding: 0 16px 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+.hero-banner__dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+}
+
+.hero-banner__title {
+  margin: 27px 0 0;
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 56px;
+  letter-spacing: -0.02em;
+}
+
+.hero-banner__text {
+  max-width: 640px;
+  margin: 22px 0 0;
+  font-size: 18px;
+  line-height: 29px;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.hero-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 36px;
+}
+
+.hero-banner__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 54px;
+  padding: 0 26px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  transition: var(--transition);
+}
+
+.hero-banner__btn--primary {
+  background: var(--color-white);
+  color: #0a3a86;
+}
+
+.hero-banner__btn--primary svg {
+  color: #1473e6;
+}
+
+.hero-banner__btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(4, 30, 80, 0.3);
+}
+
+.hero-banner__btn--ghost {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+}
+
+.hero-banner__btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.hero-banner__count {
+  display: grid;
+  place-items: center;
+  min-width: 30px;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 12px;
+  background: #38bdf8;
+  color: #082b50;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* ============ Hero rasmi ============ */
+.hero-art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-art__stage {
+  position: absolute;
+  top: 30px;
+  right: 80px;
+  width: 400px;
+  height: 400px;
+}
+
+.hero-art__ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hero-art__ring--outer {
+  width: 394px;
+  height: 394px;
+  border: 1.5px dotted rgba(255, 255, 255, 0.3);
+}
+
+.hero-art__ring--middle {
+  width: 296px;
+  height: 296px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+}
+
+.hero-art__ring--inner {
+  width: 208px;
+  height: 208px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hero-art__shield {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 130px;
+  height: 158px;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 12px 24px rgba(5, 40, 110, 0.35));
+}
+
+.hero-art__dot {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.hero-art__dot--a {
+  top: 85px;
+  left: 303px;
+  width: 10px;
+  height: 10px;
+  background: #cfeafd;
+}
+
+.hero-art__dot--b {
+  top: 136px;
+  left: 45px;
+  width: 14px;
+  height: 14px;
+  background: #38b6f5;
+}
+
+.hero-art__dot--c {
+  top: 255px;
+  left: 341px;
+  width: 18px;
+  height: 18px;
+  background: #7cc9f7;
+}
+
+.hero-art__badge {
+  position: absolute;
+  right: 60px;
+  bottom: 44px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 248px;
+  height: 74px;
+  padding: 0 20px 0 14px;
+  border-radius: 16px;
+  background: var(--color-white);
+  box-shadow: 0 16px 36px rgba(4, 30, 80, 0.3);
+  color: var(--color-text);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.hero-art__badge-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: #eaf3fd;
+  color: #1473e6;
+}
+
+/* ============ Statistika kartalari ============ */
+.dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 26px;
+}
+
+.stat-card {
+  --stat-color: #16a34a;
+  --stat-from: #22c55e;
+  --stat-to: #16a34a;
+  --stat-glow: rgba(34, 197, 94, 0.35);
+
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  height: 122px;
+  padding: 0 28px 0 24px;
+  border-left: 5px solid var(--stat-color);
+  border-radius: 24px;
+  background: var(--color-white);
+  box-shadow: 0 6px 20px rgba(11, 35, 66, 0.05);
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(11, 35, 66, 0.1);
+}
+
+.stat-card--blue {
+  --stat-color: #1472e0;
+  --stat-from: #2b8cf0;
+  --stat-to: #0a63d6;
+  --stat-glow: rgba(20, 114, 224, 0.35);
+}
+
+.stat-card--purple {
+  --stat-color: #7c3aed;
+  --stat-from: #9b5cf6;
+  --stat-to: #6d28d9;
+  --stat-glow: rgba(124, 58, 237, 0.35);
+}
+
+.stat-card__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 70px;
+  height: 70px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--stat-from), var(--stat-to));
+  box-shadow: 0 10px 20px var(--stat-glow);
+  color: var(--color-white);
+}
+
+.stat-card__info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-card__label {
+  font-size: 15px;
+  color: #5d6e82;
+}
+
+.stat-card__value {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 46px;
+  color: var(--color-text);
+}
+
+.stat-card__arrow {
+  display: grid;
+  place-items: center;
+  align-self: flex-start;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  margin-top: 26px;
+  border-radius: 50%;
+  background: #eef3f9;
+  color: #6b7a8d;
+}
+
+/* ============ Moslashuvchanlik ============ */
+@media (max-width: 1400px) {
+  .hero-art {
+    display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .dashboard__stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-banner {
+    min-height: 0;
+    padding: 32px 24px;
+  }
+
+  .hero-banner__title {
+    font-size: 34px;
+    line-height: 38px;
+  }
+
+  .hero-banner__text {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}
