@@ -442,17 +442,6 @@
   gap: 7px;
 }
 
-.mail-row__reply {
-  height: 28px;
-  padding: 0 10px;
-  border: 1px solid #a8c9ef;
-  border-radius: 12px;
-  background: #fff;
-  color: #176bd1;
-  font-size: 14px;
-  font-weight: 800;
-}
-
 .mail-row__more {
   border: 0;
   background: transparent;

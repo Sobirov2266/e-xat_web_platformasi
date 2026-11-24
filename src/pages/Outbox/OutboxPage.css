@@ -1,0 +1,63 @@
+.outbox-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  margin-bottom: 22px;
+}
+
+.outbox-header > .page-header {
+  height: 56px;
+  margin: 0;
+}
+
+.outbox-compose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 50px;
+  min-width: 180px;
+  padding: 0 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2b8df2, #1673dc);
+  box-shadow: 0 8px 18px rgba(24, 115, 220, 0.24);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.outbox-compose span {
+  font-size: 19px;
+  line-height: 1;
+}
+
+.outbox-page .mail-status--draft {
+  background: #f1f3f6;
+  color: #657184;
+}
+
+.outbox-page .mail-status--draft i {
+  background: #8d98a8;
+}
+
+.outbox-page .mail-status--sent {
+  background: #edf4ff;
+  color: #236bd5;
+}
+
+.outbox-page .mail-status--sent i {
+  background: #347de0;
+}
+
+@media (max-width: 640px) {
+  .outbox-header {
+    height: auto;
+  }
+
+  .outbox-compose {
+    min-width: 0;
+    height: 44px;
+    padding: 0 14px;
+  }
+}

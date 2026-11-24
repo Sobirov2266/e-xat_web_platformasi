@@ -131,7 +131,6 @@ export default function InboxPage() {
         {selected.length > 0 ? (
           <div className="selection-toolbar">
             <strong>{selected.length} ta xat tanlandi</strong>
-            <button type="button">⌁ Biriktirish</button>
             <button type="button">◉ O‘qilgan deb belgilash</button>
             <button type="button">▦ Arxivlash</button>
             <button type="button" className="selection-toolbar__clear" onClick={() => setSelected([])}>
@@ -198,7 +197,6 @@ export default function InboxPage() {
                   </span>
                 </div>
                 <div className="mail-row__action">
-                  {item.status === 'answered' && <button type="button" className="mail-row__reply">Biriktirish</button>}
                   <button type="button" className="mail-row__more" aria-label="Boshqa amallar">⋮</button>
                 </div>
               </article>
