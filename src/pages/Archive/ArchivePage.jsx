@@ -2,6 +2,12 @@ import { useMemo, useState } from 'react';
 import PageHeader from '../../components/layout/PageHeader';
 import { ArchiveIcon } from '../../components/icons';
 import { MOCK_ARCHIVE, ARCHIVE_TABS } from '../../data/mockArchive';
+import {
+  getArchivedInboxLetters,
+  getArchivedOutboxLetters,
+  getRemovedArchiveIds,
+  unarchiveLetter,
+} from '../../services/letterArchive';
 import './ArchivePage.css';
 
 const PaperclipIcon = () => (
@@ -31,10 +37,20 @@ export default function ArchivePage() {
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(1);
+  const [message, setMessage] = useState('');
+  const [archiveVersion, setArchiveVersion] = useState(0);
 
   const visibleRows = useMemo(() => {
     const query = search.trim().toLowerCase();
-    return MOCK_ARCHIVE.filter((item) => {
+    const removedIds = new Set(getRemovedArchiveIds());
+    const archivedInbox = getArchivedInboxLetters();
+    const archivedOutbox = getArchivedOutboxLetters();
+    const combined = [
+      ...archivedInbox,
+      ...archivedOutbox,
+      ...MOCK_ARCHIVE.filter((item) => !removedIds.has(item.id)),
+    ];
+    return combined.filter((item) => {
       const tabMatch =
         activeTab === 'all' ||
         (activeTab === 'with-attachment' && item.attachment) ||
@@ -46,7 +62,7 @@ export default function ArchivePage() {
         item.subject.toLowerCase().includes(query);
       return tabMatch && searchMatch;
     });
-  }, [activeTab, search]);
+  }, [activeTab, search, archiveVersion]);
 
   const toggleSelected = (id) => {
     setSelected((current) =>
@@ -56,19 +72,31 @@ export default function ArchivePage() {
 
   const handleUnarchive = (id) => {
     if (confirm(`#${id} raqamli xatni arxivdan chiqarmoqchimisiz?`)) {
-      alert('Xat arxivdan chiqarildi');
+      unarchiveLetter(id);
+      setArchiveVersion((current) => current + 1);
+      setMessage('Xat arxivdan chiqarildi');
+      window.setTimeout(() => setMessage(''), 3000);
     }
   };
 
   const handleBulkUnarchive = () => {
     if (confirm(`${selected.length} ta xatni arxivdan chiqarmoqchimisiz?`)) {
-      alert('Xatlar arxivdan chiqarildi');
+      selected.forEach(unarchiveLetter);
       setSelected([]);
+      setArchiveVersion((current) => current + 1);
+      setMessage('Xatlar arxivdan chiqarildi');
+      window.setTimeout(() => setMessage(''), 3000);
     }
   };
 
   return (
     <div className="archive-page">
+      {message && (
+        <div className="archive-message" role="status">
+          <span>✓</span>
+          {message}
+        </div>
+      )}
       <PageHeader
         Icon={ArchiveIcon}
         title="Arxiv"

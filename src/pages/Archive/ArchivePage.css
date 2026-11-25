@@ -2,6 +2,35 @@
   min-width: 0;
 }
 
+.archive-message {
+  position: fixed;
+  top: 82px;
+  right: 28px;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 0 18px;
+  border: 1px solid #bde8cc;
+  border-radius: 10px;
+  background: #f4fff7;
+  box-shadow: 0 12px 30px rgba(25, 93, 54, 0.16);
+  color: #1d7042;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.archive-message span {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #27b35e;
+  color: #fff;
+}
+
 .archive-page > .page-header {
   height: 56px;
   margin-bottom: 22px;

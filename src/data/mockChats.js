@@ -9,6 +9,12 @@ export const MOCK_CHATS = [
     preview: 'Assalomu alaykum. Sizning xat...',
     unread: 1,
     urgent: true,
+    stir: '203456789',
+    phone: '998712021100',
+    contactOne: 'Usmonova Nilufar',
+    contactOneRole: 'Devonxona bo‘limi',
+    contactTwo: 'Karimov Jahongir',
+    contactTwoRole: 'Axborot texnologiyalari',
   },
   {
     id: 2,
@@ -19,6 +25,8 @@ export const MOCK_CHATS = [
     date: '17.10.2026',
     preview: 'Rahmat, ma’lumot qabul qilindi.',
     unread: 0,
+    stir: '204112233',
+    phone: '998712000000',
   },
   {
     id: 3,
@@ -232,3 +240,77 @@ export const MOCK_MESSAGES = [
     text: 'Javob xatini oldik. Hamkorlik uchun tashakkur.',
   },
 ];
+
+export const MOCK_CHAT_MESSAGES = {
+  1: MOCK_MESSAGES,
+  2: [
+    { id: 1, date: '17.10.2026' },
+    { id: 2, outgoing: true, time: '09:18', text: 'Assalomu alaykum. 2026-yilga oid qaror loyihasi bo‘yicha izoh so‘rab yuborilgan xat qabul qilindimi?' },
+    { id: 3, author: 'Azizov S.', authorRole: 'Toshkent shahar hokimligi', time: '10:05', text: 'Assalomu alaykum.\nXatimizga biriktirilgan loyiha ko‘rib chiqildi.' },
+    { id: 4, outgoing: true, time: '10:26', text: 'Ma’lumotni vaqtida taqdim qilganingiz uchun rahmat.' },
+    { id: 5, author: 'Azizov S.', authorRole: 'Toshkent shahar hokimligi', time: '11:20', text: 'Rahmat, ma’lumot qabul qilindi.' },
+  ],
+  3: [
+    { id: 1, date: '17.10.2026' },
+    { id: 2, outgoing: true, time: '08:42', text: 'Davlat xizmatlari agentligiga yuborilgan elektron arizamiz bo‘yicha holat haqida xabar berishingizni so‘raymiz.' },
+    { id: 3, author: 'Xasanova D.', authorRole: 'Davlat xizmatlari agentligi', time: '09:37', text: 'Ariza ro‘yxatga olindi. Qabul raqami #DS-2026-184.' },
+    { id: 4, author: 'Xasanova D.', authorRole: 'Davlat xizmatlari agentligi', time: '12:15', text: 'Hozirda ko’rib chiqilmoqda.' },
+  ],
+  4: [
+    { id: 1, date: '16.10.2026' },
+    { id: 2, author: 'Rahimov J.', authorRole: 'ADU universiteti', time: '09:10', text: 'Assalomu alaykum. Universitetimizdan yangi ma’lumotnoma xati yuborildi.' },
+    { id: 3, outgoing: true, time: '09:25', text: 'Xat qabul qilindi, tegishli bo‘limga yuborildi.' },
+    { id: 4, date: '17.10.2026' },
+    { id: 5, author: 'Rahimov J.', authorRole: 'ADU universiteti', time: '10:40', text: 'Qo‘shimcha hujjatlar ilovada yuborildi.' },
+  ],
+  5: [
+    { id: 1, date: '15.10.2026' },
+    { id: 2, outgoing: true, time: '10:30', text: 'Moliya vazirligiga 2026-yil ikkinchi chorak hisobotini so‘rov sifatida yubordik.' },
+    { id: 3, author: 'Nazarov A.', authorRole: 'Moliya vazirligi', time: '13:05', text: 'Hisobot xatining ilovasini o‘rgandik.' },
+    { id: 4, outgoing: true, time: '13:22', text: 'Qo‘shimcha ma’lumot yoki tuzatish talab etiladimi?' },
+    { id: 5, author: 'Nazarov A.', authorRole: 'Moliya vazirligi', time: '14:08', text: 'Ma’lumotni taqdim qilmad. Belgilangan shaklga rioya qilinishi zarur.' },
+  ],
+  6: [
+    { id: 1, date: '15.10.2026' },
+    { id: 2, outgoing: true, time: '11:10', text: 'Elektron hujjat aylanishi platformasi bo‘yicha texnik savollarimiz bor.' },
+    { id: 3, author: 'Qodirov B.', authorRole: 'Raqamli texnologiyalar vazirligi', time: '12:18', text: 'Savollaringizni xat shaklida yuboring, mutaxassislarimiz javob beradi.' },
+    { id: 4, outgoing: true, time: '12:35', text: 'Tushunarli, xatimizni shu bugun yuboramiz.' },
+    { id: 5, author: 'Qodirov B.', authorRole: 'Raqamli texnologiyalar vazirligi', time: '15:42', text: 'Savolingizga javob yuborildi.' },
+  ],
+  7: [
+    { id: 1, date: '14.10.2026' },
+    { id: 2, outgoing: true, time: '09:12', text: 'Statistik hisobotlarni taqdim etish muddatini uzaytira olasizmi?' },
+    { id: 3, author: 'Eshonov M.', authorRole: 'Statistika agentligi', time: '10:20', text: 'Ma’lumotni tekshiramiz va rasmiy javob beramiz.' },
+    { id: 4, outgoing: true, time: '11:04', text: 'Qo‘shimcha ma’lumot kerak bo‘lsa, shu muloqotda xabar qiling.' },
+  ],
+  8: [
+    { id: 1, date: '13.10.2026' },
+    { id: 2, outgoing: true, time: '13:20', text: 'Xalqaro hamkorlik taklifi bo‘yicha xat yuborildi.' },
+    { id: 3, author: 'Ismoilova G.', authorRole: 'Tashqi ishlar vazirligi', time: '14:05', text: 'Xat qabul qilindi. Tegishli bo‘limga topshirildi.' },
+    { id: 4, outgoing: true, time: '14:20', text: 'Hamkorlik uchun tayyormiz, qo‘shimcha uchrashuvni o‘tkazish mumkin.' },
+  ],
+  9: [
+    { id: 1, date: '12.10.2026' },
+    { id: 2, outgoing: true, time: '08:55', text: 'Sog‘liqni saqlash bo‘yicha choraklik hisobot so‘roviga javob kutamiz.' },
+    { id: 3, author: 'Sobirova M.', authorRole: 'Sog‘liqni saqlash vazirligi', time: '09:40', text: 'Hujjatlar ko‘rib chiqish uchun olindi.' },
+    { id: 4, outgoing: true, time: '10:02', text: 'Yana bir marotaba rahmat.' },
+  ],
+  10: [
+    { id: 1, date: '11.10.2026' },
+    { id: 2, outgoing: true, time: '12:20', text: 'Uy-joy qurilishi loyihasi bo‘yicha taklifimizni yubordik.' },
+    { id: 3, author: 'Bekmurodov I.', authorRole: 'Qurilish vazirligi', time: '13:12', text: 'Takliflaringizni ko‘rib chiqdik.' },
+    { id: 4, author: 'Bekmurodov I.', authorRole: 'Qurilish vazirligi', time: '14:30', text: 'Takliflaringiz uchun rahmat.' },
+  ],
+  11: [
+    { id: 1, date: '10.10.2026' },
+    { id: 2, outgoing: true, time: '10:15', text: 'Byudjet hisobotini tuzatish bo‘yicha javob kutamiz.' },
+    { id: 3, author: 'Tursunov O.', authorRole: 'Iqtisodiyot va moliya vazirligi', time: '11:28', text: 'Hisobot mutaxassislar tomonidan tekshirilmoqda.' },
+    { id: 4, author: 'Tursunov O.', authorRole: 'Iqtisodiyot va moliya vazirligi', time: '15:10', text: 'Javob xati tayyorlanmoqda.' },
+  ],
+  12: [
+    { id: 1, date: '09.10.2026' },
+    { id: 2, outgoing: true, time: '09:05', text: 'Yoshlar loyihasi bo‘yicha so‘rov yubordik.' },
+    { id: 3, author: 'Aliyeva S.', authorRole: 'Yoshlar ishlari agentligi', time: '10:16', text: 'Ma’lumotlar qabul qilindi.' },
+    { id: 4, outgoing: true, time: '10:42', text: 'Navbatdagi uchrashuv sanasini kelishib olamiz.' },
+  ],
+};

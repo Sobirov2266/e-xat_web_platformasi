@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PageHeader from '../../components/layout/PageHeader';
 import { InboxIcon } from '../../components/icons';
 import { INBOX_TABS, MOCK_INBOX } from '../../data/mockInbox';
+import { archiveInboxLetters, getArchivedInboxLetters } from '../../services/letterArchive';
 import './InboxPage.css';
 
 const PaperclipIcon = () => (
@@ -18,12 +19,6 @@ const SearchIcon = () => (
   </svg>
 );
 
-const ChevronDownIcon = () => (
-  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-    <path d="m6 9 6 6 6-6" />
-  </svg>
-);
-
 const STATUS_LABELS = {
   answered: 'Javob berildi',
   new: 'Yangi',
@@ -32,17 +27,21 @@ const STATUS_LABELS = {
 
 export default function InboxPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(() =>
     location.state?.inboxTab === 'new' ? 'new' : 'all',
   );
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState([]);
-  const [filterOpen, setFilterOpen] = useState(false);
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [archiveMessage, setArchiveMessage] = useState('');
 
   const visibleRows = useMemo(() => {
     const query = search.trim().toLowerCase();
+    const archivedIds = new Set(getArchivedInboxLetters().map((item) => item.id));
     return MOCK_INBOX.filter((item) => {
+      if (archivedIds.has(item.id)) return false;
       const tabMatch =
         activeTab === 'all' ||
         (activeTab === 'new' && item.status === 'new') ||
@@ -63,8 +62,27 @@ export default function InboxPage() {
     );
   };
 
+  const handleArchiveSelected = () => {
+    const letters = MOCK_INBOX.filter((item) => selected.includes(item.id));
+    archiveInboxLetters(letters);
+    setSelected([]);
+    setArchiveMessage(
+      `${letters.length} ta xat arxivlandi`,
+    );
+    window.setTimeout(() => setArchiveMessage(''), 3000);
+  };
+
+  const totalPages = Math.max(1, Math.ceil(visibleRows.length / pageSize));
+  const pagedRows = visibleRows.slice((page - 1) * pageSize, page * pageSize);
+
   return (
     <div className="inbox-page">
+      {archiveMessage && (
+        <div className="inbox-archive-toast" role="status">
+          <span>✓</span>
+          {archiveMessage}
+        </div>
+      )}
       <PageHeader
         Icon={InboxIcon}
         title="Kiruvchi xatlar"
@@ -97,34 +115,15 @@ export default function InboxPage() {
               <SearchIcon />
               <input
                 value={search}
-                onChange={(event) => setSearch(event.target.value)}
+                onChange={(event) => {
+                  setSearch(event.target.value);
+                  setPage(1);
+                }}
                 placeholder="Xat, raqam yoki mavzu qidiring..."
                 aria-label="Xatlar ichida qidirish"
               />
             </label>
 
-            <div className="inbox-filter">
-              <button
-                type="button"
-                className="inbox-filter__button"
-                aria-expanded={filterOpen}
-                onClick={() => setFilterOpen((current) => !current)}
-              >
-                <ChevronDownIcon />
-                <span>Filter</span>
-              </button>
-              {filterOpen && (
-                <div className="inbox-filter__menu">
-                  <button type="button" onClick={() => setFilterOpen(false)}>Barchasi</button>
-                  <button type="button" onClick={() => setFilterOpen(false)}>Ilovali xatlar</button>
-                  <button type="button" onClick={() => setFilterOpen(false)}>Muddatli xatlar</button>
-                </div>
-              )}
-            </div>
-
-            <button type="button" className="inbox-refresh" aria-label="So‘rovlarni yangilash">
-              ↻
-            </button>
           </div>
         </div>
 
@@ -132,7 +131,7 @@ export default function InboxPage() {
           <div className="selection-toolbar">
             <strong>{selected.length} ta xat tanlandi</strong>
             <button type="button">◉ O‘qilgan deb belgilash</button>
-            <button type="button">▦ Arxivlash</button>
+            <button type="button" onClick={handleArchiveSelected}>▦ Arxivlash</button>
             <button type="button" className="selection-toolbar__clear" onClick={() => setSelected([])}>
               × Bekor qilish
             </button>
@@ -153,7 +152,7 @@ export default function InboxPage() {
         )}
 
         <div className="mail-table">
-          {visibleRows.map((item) => {
+          {pagedRows.map((item) => {
             const isSelected = selected.includes(item.id);
             const isUnread = item.status === 'new';
 
@@ -161,12 +160,23 @@ export default function InboxPage() {
               <article
                 key={item.id}
                 className={`mail-row ${isUnread ? 'mail-row--unread' : ''} ${isSelected ? 'mail-row--selected' : ''}`}
+                role="link"
+                tabIndex={0}
+                onClick={() => navigate(`/inbox/${item.id}`)}
+                onKeyDown={(event) => {
+                  if (event.target !== event.currentTarget) return;
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    navigate(`/inbox/${item.id}`);
+                  }
+                }}
               >
                 <div className="mail-row__checkbox">
                   <input
                     type="checkbox"
                     checked={isSelected}
                     onChange={() => toggleSelected(item.id)}
+                    onClick={(event) => event.stopPropagation()}
                     aria-label={`${item.id} raqamli xatni tanlash`}
                   />
                 </div>
@@ -196,27 +206,32 @@ export default function InboxPage() {
                     {STATUS_LABELS[item.status]}
                   </span>
                 </div>
-                <div className="mail-row__action">
-                  <button type="button" className="mail-row__more" aria-label="Boshqa amallar">⋮</button>
-                </div>
+                <div className="mail-row__action" />
               </article>
             );
           })}
         </div>
 
         <div className="inbox-pagination">
-          <strong>Jami: 24 ta hujjat</strong>
+          <strong>Jami: {visibleRows.length} ta hujjat</strong>
           <div className="inbox-pagination__right">
             <label>
               Sahifada:
-              <select defaultValue="10">
+              <select
+                value={pageSize}
+                onChange={(event) => {
+                  setPageSize(Number(event.target.value));
+                  setPage(1);
+                }}
+              >
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="50">50</option>
               </select>
             </label>
-            <button type="button" disabled aria-label="Oldingi sahifa">«</button>
-            {[1, 2, 3].map((number) => (
+            <button type="button" disabled={page === 1} onClick={() => setPage(1)} aria-label="Birinchi sahifa">«</button>
+            <button type="button" disabled={page === 1} onClick={() => setPage((current) => Math.max(1, current - 1))} aria-label="Oldingi sahifa">‹</button>
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => (
               <button
                 type="button"
                 key={number}
@@ -226,8 +241,8 @@ export default function InboxPage() {
                 {number}
               </button>
             ))}
-            <button type="button" aria-label="Keyingi sahifa">›</button>
-            <button type="button" aria-label="Oxirgi sahifa">»</button>
+            <button type="button" disabled={page === totalPages} onClick={() => setPage((current) => Math.min(totalPages, current + 1))} aria-label="Keyingi sahifa">›</button>
+            <button type="button" disabled={page === totalPages} onClick={() => setPage(totalPages)} aria-label="Oxirgi sahifa">»</button>
           </div>
         </div>
       </section>

@@ -2,6 +2,35 @@
   min-width: 0;
 }
 
+.inbox-archive-toast {
+  position: fixed;
+  top: 82px;
+  right: 28px;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 0 18px;
+  border: 1px solid #bde8cc;
+  border-radius: 10px;
+  background: #f4fff7;
+  box-shadow: 0 12px 30px rgba(25, 93, 54, 0.16);
+  color: #1d7042;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.inbox-archive-toast span {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #27b35e;
+  color: #fff;
+}
+
 .inbox-page > .page-header {
   height: 56px;
   margin-bottom: 22px;
@@ -265,6 +294,7 @@
   border-bottom: 1px solid #edf1f6;
   color: #344357;
   font-size: 16px;
+  cursor: pointer;
 }
 
 .mail-row--unread {
@@ -440,13 +470,6 @@
 .mail-row__action {
   justify-content: flex-end;
   gap: 7px;
-}
-
-.mail-row__more {
-  border: 0;
-  background: transparent;
-  color: #78879a;
-  font-size: 16px;
 }
 
 .inbox-pagination {

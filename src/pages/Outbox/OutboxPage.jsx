@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import PageHeader from '../../components/layout/PageHeader';
 import { SendIcon } from '../../components/icons';
 import { OUTBOX_TABS, MOCK_OUTBOX } from '../../data/mockOutbox';
 import { ROUTES } from '../../routes/paths';
+import { archiveOutboxLetters, getArchivedOutboxLetters } from '../../services/letterArchive';
 import '../Inbox/InboxPage.css';
 import './OutboxPage.css';
 
@@ -20,33 +21,30 @@ const SearchIcon = () => (
   </svg>
 );
 
-const ChevronDownIcon = () => (
-  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-    <path d="m6 9 6 6 6-6" />
-  </svg>
-);
-
 const STATUS_LABELS = {
   answered: 'Javob berilgan',
   sent: 'Yuborilgan',
-  draft: 'Qoralama',
+  read: 'O‘qildi',
 };
 
 export default function OutboxPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('all');
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState([]);
-  const [filterOpen, setFilterOpen] = useState(false);
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [archiveMessage, setArchiveMessage] = useState('');
 
   const visibleRows = useMemo(() => {
     const query = search.trim().toLowerCase();
+    const archivedIds = new Set(getArchivedOutboxLetters().map((item) => item.id));
     return MOCK_OUTBOX.filter((item) => {
+      if (archivedIds.has(item.id)) return false;
       const tabMatch =
         activeTab === 'all' ||
-        (activeTab === 'sent' && item.status === 'sent') ||
-        (activeTab === 'draft' && item.status === 'draft') ||
+        (activeTab === 'read' && item.status === 'read') ||
         (activeTab === 'answered' && item.status === 'answered');
       const searchMatch =
         !query ||
@@ -63,8 +61,25 @@ export default function OutboxPage() {
     );
   };
 
+  const handleArchiveSelected = () => {
+    const letters = MOCK_OUTBOX.filter((item) => selected.includes(item.id));
+    archiveOutboxLetters(letters);
+    setSelected([]);
+    setArchiveMessage(`${letters.length} ta xat arxivlandi`);
+    window.setTimeout(() => setArchiveMessage(''), 3000);
+  };
+
+  const totalPages = Math.max(1, Math.ceil(visibleRows.length / pageSize));
+  const pagedRows = visibleRows.slice((page - 1) * pageSize, page * pageSize);
+
   return (
     <div className="inbox-page outbox-page">
+      {archiveMessage && (
+        <div className="inbox-archive-toast" role="status">
+          <span>✓</span>
+          {archiveMessage}
+        </div>
+      )}
       {location.state?.sentSuccess && (
         <div className="outbox-success" role="status">
           <span className="outbox-success__icon">✓</span>
@@ -112,34 +127,15 @@ export default function OutboxPage() {
               <SearchIcon />
               <input
                 value={search}
-                onChange={(event) => setSearch(event.target.value)}
+                onChange={(event) => {
+                  setSearch(event.target.value);
+                  setPage(1);
+                }}
                 placeholder="Xat, raqam yoki mavzu qidiring..."
                 aria-label="Xatlar ichida qidirish"
               />
             </label>
 
-            <div className="inbox-filter">
-              <button
-                type="button"
-                className="inbox-filter__button"
-                aria-expanded={filterOpen}
-                onClick={() => setFilterOpen((current) => !current)}
-              >
-                <ChevronDownIcon />
-                <span>Filter</span>
-              </button>
-              {filterOpen && (
-                <div className="inbox-filter__menu">
-                  <button type="button" onClick={() => setFilterOpen(false)}>Barchasi</button>
-                  <button type="button" onClick={() => setFilterOpen(false)}>Ilovali xatlar</button>
-                  <button type="button" onClick={() => setFilterOpen(false)}>Muddatli xatlar</button>
-                </div>
-              )}
-            </div>
-
-            <button type="button" className="inbox-refresh" aria-label="So‘rovlarni yangilash">
-              ↻
-            </button>
           </div>
         </div>
 
@@ -147,7 +143,7 @@ export default function OutboxPage() {
           <div className="selection-toolbar">
             <strong>{selected.length} ta xat tanlandi</strong>
             <button type="button">◉ Yuborilgan deb belgilash</button>
-            <button type="button">▦ Arxivlash</button>
+            <button type="button" onClick={handleArchiveSelected}>▦ Arxivlash</button>
             <button type="button" className="selection-toolbar__clear" onClick={() => setSelected([])}>
               × Bekor qilish
             </button>
@@ -161,6 +157,7 @@ export default function OutboxPage() {
             <div className="table-head__sender">Qabul qiluvchi tashkilot <span>↕</span></div>
             <div className="table-head__subject">Hujjat mavzusi <span>↕</span></div>
             <div className="table-head__date">Yuborilgan sana <span>↕</span></div>
+            <div className="table-head__read">Xat o‘qilgan vaqt <span>↕</span></div>
             <div className="table-head__deadline">Javob berish muddati <span>↕</span></div>
             <div className="table-head__status">Holati</div>
             <div className="table-head__action" />
@@ -168,16 +165,27 @@ export default function OutboxPage() {
         )}
 
         <div className="mail-table">
-          {visibleRows.map((item) => (
+          {pagedRows.map((item) => (
             <article
               key={item.id}
               className={`mail-row ${item.status === 'sent' ? 'mail-row--unread' : ''} ${selected.includes(item.id) ? 'mail-row--selected' : ''}`}
+              role="link"
+              tabIndex={0}
+              onClick={() => navigate(`/outbox/${item.id}`)}
+              onKeyDown={(event) => {
+                if (event.target !== event.currentTarget) return;
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  navigate(`/outbox/${item.id}`);
+                }
+              }}
             >
               <div className="mail-row__checkbox">
                 <input
                   type="checkbox"
                   checked={selected.includes(item.id)}
                   onChange={() => toggleSelected(item.id)}
+                  onClick={(event) => event.stopPropagation()}
                   aria-label={`${item.id} raqamli xatni tanlash`}
                 />
               </div>
@@ -197,6 +205,9 @@ export default function OutboxPage() {
                 )}
               </div>
               <div className="mail-row__date">{item.sent}</div>
+              <div className={`mail-row__read ${item.readAt ? 'mail-row__read--set' : ''}`}>
+                {item.readAt || '—'}
+              </div>
               <div className={`mail-row__deadline ${item.deadline ? 'mail-row__deadline--set' : ''}`}>
                 {item.deadline || '—'}
               </div>
@@ -206,26 +217,31 @@ export default function OutboxPage() {
                   {STATUS_LABELS[item.status]}
                 </span>
               </div>
-              <div className="mail-row__action">
-                <button type="button" className="mail-row__more" aria-label="Boshqa amallar">⋮</button>
-              </div>
+              <div className="mail-row__action" />
             </article>
           ))}
         </div>
 
         <div className="inbox-pagination">
-          <strong>Jami: 24 ta hujjat</strong>
+          <strong>Jami: {visibleRows.length} ta hujjat</strong>
           <div className="inbox-pagination__right">
             <label>
               Sahifada:
-              <select defaultValue="10">
+              <select
+                value={pageSize}
+                onChange={(event) => {
+                  setPageSize(Number(event.target.value));
+                  setPage(1);
+                }}
+              >
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="50">50</option>
               </select>
             </label>
-            <button type="button" disabled aria-label="Oldingi sahifa">«</button>
-            {[1, 2, 3].map((number) => (
+            <button type="button" disabled={page === 1} onClick={() => setPage(1)} aria-label="Birinchi sahifa">«</button>
+            <button type="button" disabled={page === 1} onClick={() => setPage((current) => Math.max(1, current - 1))} aria-label="Oldingi sahifa">‹</button>
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => (
               <button
                 type="button"
                 key={number}
@@ -235,8 +251,8 @@ export default function OutboxPage() {
                 {number}
               </button>
             ))}
-            <button type="button" aria-label="Keyingi sahifa">›</button>
-            <button type="button" aria-label="Oxirgi sahifa">»</button>
+            <button type="button" disabled={page === totalPages} onClick={() => setPage((current) => Math.min(totalPages, current + 1))} aria-label="Keyingi sahifa">›</button>
+            <button type="button" disabled={page === totalPages} onClick={() => setPage(totalPages)} aria-label="Oxirgi sahifa">»</button>
           </div>
         </div>
       </section>

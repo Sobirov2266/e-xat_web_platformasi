@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { DocumentIcon, SendIcon } from '../../components/icons';
 import { MOCK_RECIPIENTS } from '../../data/mockRecipients';
 import { addOutboxLetter } from '../../data/mockOutbox';
@@ -36,11 +36,14 @@ const LockIcon = () => (
 
 export default function ComposePage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const replyTo = location.state?.replyTo || '';
+  const replySubject = location.state?.replySubject || '';
   const fileInputRef = useRef(null);
-  const [recipientSearch, setRecipientSearch] = useState('');
-  const [recipient, setRecipient] = useState('');
+  const [recipientSearch, setRecipientSearch] = useState(replyTo);
+  const [recipient, setRecipient] = useState(replyTo);
   const [recipientPickerOpen, setRecipientPickerOpen] = useState(false);
-  const [subject, setSubject] = useState('');
+  const [subject, setSubject] = useState(replySubject);
   const [priority, setPriority] = useState('normal');
   const [body, setBody] = useState('');
   const [attachments, setAttachments] = useState([]);
@@ -86,8 +89,10 @@ export default function ComposePage() {
           ‹
         </button>
         <div>
-          <h1 className="compose-header__title">Yangi xat yozish</h1>
-          <p className="compose-header__subtitle">Bosh sahifa › Chiquvchi xatlar › Yangi xat yozish</p>
+          <h1 className="compose-header__title">{replyTo ? 'Javob xatini yozish' : 'Yangi xat yozish'}</h1>
+          <p className="compose-header__subtitle">
+            Bosh sahifa › {replyTo ? 'Kiruvchi xatlar › Javob yozish' : 'Chiquvchi xatlar › Yangi xat yozish'}
+          </p>
         </div>
       </div>
 

@@ -3,12 +3,15 @@ import MainLayout from '../components/layout/MainLayout';
 import LoginPage from '../pages/Login/LoginPage';
 import DashboardPage from '../pages/Dashboard/DashboardPage';
 import InboxPage from '../pages/Inbox/InboxPage';
+import InboxDetailPage from '../pages/Inbox/InboxDetailPage';
 import OutboxPage from '../pages/Outbox/OutboxPage';
+import OutboxDetailPage from '../pages/Outbox/OutboxDetailPage';
 import ComposePage from '../pages/Compose/ComposePage';
 import ChatPage from '../pages/Chat/ChatPage';
 import AttachmentPage from '../pages/Attachment/AttachmentPage';
 import OrganizationPage from '../pages/Organization/OrganizationPage';
 import ArchivePage from '../pages/Archive/ArchivePage';
+import ReportPage from '../pages/Report/ReportPage';
 import ProtectedRoute from './ProtectedRoute';
 import { ROUTES } from './paths';
 
@@ -31,12 +34,14 @@ export default function AppRouter() {
             <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
             <Route path={ROUTES.COMPOSE} element={<ComposePage />} />
             <Route path={ROUTES.INBOX} element={<InboxPage />} />
+            <Route path={ROUTES.INBOX_DETAIL} element={<InboxDetailPage />} />
             <Route path={ROUTES.OUTBOX} element={<OutboxPage />} />
+            <Route path={ROUTES.OUTBOX_DETAIL} element={<OutboxDetailPage />} />
             <Route path={ROUTES.CHAT} element={<ChatPage />} />
             <Route path={ROUTES.ATTACHMENT} element={<AttachmentPage />} />
             <Route path={ROUTES.ORGANIZATION} element={<OrganizationPage />} />
             <Route path={ROUTES.ARCHIVE} element={<ArchivePage />} />
-            <Route path={ROUTES.REPORT} element={<Placeholder title="Hisobot" />} />
+            <Route path={ROUTES.REPORT} element={<ReportPage />} />
             <Route path={ROUTES.SETTINGS} element={<Placeholder title="Sozlamalar" />} />
           </Route>
         </Route>

@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PageHeader from '../../components/layout/PageHeader';
-import { ChatIcon, ChevronRightIcon, SendIcon, ShieldCheckIcon } from '../../components/icons';
-import { MOCK_CHATS, MOCK_MESSAGES } from '../../data/mockChats';
+import { AttachmentIcon, ChatIcon, ChevronRightIcon, SendIcon, ShieldCheckIcon } from '../../components/icons';
+import { MOCK_CHATS, MOCK_CHAT_MESSAGES } from '../../data/mockChats';
 import './ChatPage.css';
 
 const SearchIcon = () => (
@@ -49,26 +50,59 @@ const getInitials = (name = '') =>
     .toUpperCase();
 
 export default function ChatPage() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState('all');
-  const [activeChat, setActiveChat] = useState(MOCK_CHATS[0]);
+  const [chatList, setChatList] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('e-xat_chat_list'));
+      return Array.isArray(saved) ? saved : MOCK_CHATS;
+    } catch {
+      return MOCK_CHATS;
+    }
+  });
+  const [activeChat, setActiveChat] = useState(chatList[0]);
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState(MOCK_MESSAGES);
+  const [messagesByChat, setMessagesByChat] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('e-xat_chat_messages'));
+      return saved && typeof saved === 'object'
+        ? { ...MOCK_CHAT_MESSAGES, ...saved }
+        : { ...MOCK_CHAT_MESSAGES };
+    } catch {
+      return { ...MOCK_CHAT_MESSAGES };
+    }
+  });
+  const [attachments, setAttachments] = useState([]);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState('');
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const conversationBodyRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const messages = messagesByChat[activeChat.id] || [];
 
   const unreadCount = useMemo(
-    () => MOCK_CHATS.reduce((total, chat) => total + chat.unread, 0),
-    [],
+    () => chatList.reduce((total, chat) => total + chat.unread, 0),
+    [chatList],
   );
 
   const chats = useMemo(() => {
     const query = search.trim().toLowerCase();
-    return MOCK_CHATS.filter((chat) => {
+    return chatList.filter((chat) => {
       const tabMatch = activeTab === 'all' || chat.unread > 0;
       const searchMatch = !query || chat.name.toLowerCase().includes(query);
       return tabMatch && searchMatch;
     });
-  }, [activeTab, search]);
+  }, [activeTab, search, chatList]);
+
+  useEffect(() => {
+    localStorage.setItem('e-xat_chat_list', JSON.stringify(chatList));
+  }, [chatList]);
+
+  useEffect(() => {
+    localStorage.setItem('e-xat_chat_messages', JSON.stringify(messagesByChat));
+  }, [messagesByChat]);
 
   useEffect(() => {
     const body = conversationBodyRef.current;
@@ -77,21 +111,50 @@ export default function ChatPage() {
 
   const handleSend = () => {
     const text = message.trim();
-    if (!text) return;
+    if ((!text && attachments.length === 0) || sending) return;
 
-    setMessages((current) => [
-      ...current,
-      {
-        id: current.length + 1,
-        outgoing: true,
-        time: new Date().toLocaleTimeString('uz-UZ', {
-          hour: '2-digit',
-          minute: '2-digit',
-        }),
-        text,
-      },
-    ]);
-    setMessage('');
+    setSending(true);
+    setSendError('');
+    window.setTimeout(() => {
+      setMessagesByChat((current) => {
+        const currentMessages = current[activeChat.id] || [];
+        return {
+          ...current,
+          [activeChat.id]: [
+            ...currentMessages,
+            {
+              id: currentMessages.length + 1,
+              outgoing: true,
+              time: new Date().toLocaleTimeString('uz-UZ', {
+                hour: '2-digit',
+                minute: '2-digit',
+              }),
+              text: text || 'Fayl yuborildi',
+              attachments: attachments.map((file) => file.name),
+            },
+          ],
+        };
+      });
+      setMessage('');
+      setAttachments([]);
+      setSending(false);
+    }, 350);
+  };
+
+  const handleFiles = (event) => {
+    const selectedFiles = Array.from(event.target.files || []);
+    const validFiles = selectedFiles.filter((file) => file.size <= 20 * 1024 * 1024).slice(0, 10);
+    setAttachments(validFiles);
+    setSendError(validFiles.length !== selectedFiles.length ? 'Har bir fayl hajmi 20 MB dan oshmasligi kerak.' : '');
+  };
+
+  const selectChat = (chat) => {
+    setActiveChat(chat);
+    setMoreOpen(false);
+    setDetailsOpen(false);
+    setChatList((current) =>
+      current.map((item) => item.id === chat.id ? { ...item, unread: 0 } : item),
+    );
   };
 
   return (
@@ -107,7 +170,7 @@ export default function ChatPage() {
           <div className="chat-directory__top">
             <div className="chat-directory__heading">
               <h2>Muloqotlar</h2>
-              <span>{MOCK_CHATS.length}</span>
+              <span>{chatList.length}</span>
             </div>
 
             <label className="chat-search">
@@ -127,7 +190,7 @@ export default function ChatPage() {
                 aria-pressed={activeTab === 'all'}
                 onClick={() => setActiveTab('all')}
               >
-                Barchasi <span>{MOCK_CHATS.length}</span>
+                Barchasi <span>{chatList.length}</span>
               </button>
               <button
                 type="button"
@@ -148,7 +211,7 @@ export default function ChatPage() {
                   key={chat.id}
                   className={`chat-list__item ${activeChat.id === chat.id ? 'chat-list__item--active' : ''}`}
                   aria-pressed={activeChat.id === chat.id}
-                  onClick={() => setActiveChat(chat)}
+                  onClick={() => selectChat(chat)}
                 >
                   <span className={`chat-list__avatar chat-list__avatar--${chat.initials.toLowerCase()}`}>
                     {chat.initials}
@@ -193,9 +256,15 @@ export default function ChatPage() {
                 <ShieldCheckIcon size={15} />
                 <span>DSP himoyalangan</span>
               </span>
-              <button type="button" aria-label="Boshqa amallar">
+              <button type="button" aria-label="Boshqa amallar" onClick={() => setMoreOpen((open) => !open)}>
                 <MoreIcon />
               </button>
+              {moreOpen && (
+                <div className="chat-actions-menu">
+                  <button type="button" onClick={() => { setDetailsOpen(true); setMoreOpen(false); }}>Tashkilot ma’lumotlari</button>
+                  <button type="button" onClick={() => navigate('/chat')}>Muloqotni yangilash</button>
+                </div>
+              )}
             </div>
           </header>
 
@@ -211,9 +280,13 @@ export default function ChatPage() {
                         <strong>{item.letter.title}</strong>
                       </div>
                       <span className="chat-letter__status"><i /> {item.letter.status}</span>
-                      <span className="chat-letter__link">
+                      <button
+                        type="button"
+                        className="chat-letter__link"
+                        onClick={() => navigate(item.letter.id === '#7344' ? '/inbox/7344' : '/outbox')}
+                      >
                         Xatini ochish <ChevronRightIcon size={14} />
-                      </span>
+                      </button>
                     </div>
                   );
                 }
@@ -257,6 +330,13 @@ export default function ChatPage() {
                           {item.time}
                           {item.outgoing && <span aria-label="O‘qildi"> ✓✓</span>}
                         </small>
+                        {item.attachments?.length > 0 && (
+                          <div className="chat-message__attachments">
+                            {item.attachments.map((name) => (
+                              <span key={name}><AttachmentIcon size={13} /> {name}</span>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </article>
@@ -275,31 +355,50 @@ export default function ChatPage() {
               ))}
             </div>
             <div className="chat-composer__field">
-              <input
+              <button
+                type="button"
+                className="chat-composer__attach"
+                aria-label="Fayl biriktirish"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <AttachmentIcon size={17} />
+              </button>
+              <input ref={fileInputRef} type="file" multiple hidden onChange={handleFiles} />
+              <textarea
                 value={message}
                 onChange={(event) => setMessage(event.target.value.slice(0, 1000))}
                 onKeyDown={(event) => {
-                  if (event.key === 'Enter') handleSend();
+                  if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    handleSend();
+                  }
                 }}
                 placeholder="Xabar yozing..."
                 aria-label="Xabar matni"
               />
               <span className="chat-composer__counter">{message.length} / 1000</span>
-              <button type="button" onClick={handleSend} disabled={!message.trim()}>
+              {attachments.length > 0 && (
+                <span className="chat-composer__files">{attachments.length} ta fayl</span>
+              )}
+              <button type="button" onClick={handleSend} disabled={(!message.trim() && attachments.length === 0) || sending}>
                 <SendIcon size={16} />
-                Yuborish
+                {sending ? 'Yuborilmoqda...' : 'Yuborish'}
               </button>
             </div>
+            {sendError && <div className="chat-composer__error">{sendError}</div>}
           </footer>
         </section>
 
-        <aside className="chat-details" aria-label="Tashkilot tafsilotlari">
+        <aside className={`chat-details ${detailsOpen ? 'chat-details--open' : ''}`} aria-label="Tashkilot tafsilotlari">
           <div className="chat-details__profile">
             <span className={`chat-details__avatar chat-list__avatar--${activeChat.initials.toLowerCase()}`}>
               {activeChat.initials}
             </span>
             <h2>{activeChat.name}</h2>
-            <span className="chat-details__stir">STIR: <b>203456789</b></span>
+            <span className="chat-details__stir">STIR: <b>{activeChat.stir || `20${String(activeChat.id).padStart(8, '0')}`}</b></span>
+            {detailsOpen && (
+              <button type="button" className="chat-details__close" onClick={() => setDetailsOpen(false)} aria-label="Tafsilotlarni yopish">×</button>
+            )}
           </div>
 
           <section className="chat-details__section">
@@ -307,24 +406,24 @@ export default function ChatPage() {
             <div className="chat-contact">
               <span className="chat-contact__avatar">UN</span>
               <div>
-                <strong>Usmonova Nilufar</strong>
-                <small>Devonxona bo‘limi</small>
+                <strong>{activeChat.contactOne || 'Usmonova Nilufar'}</strong>
+                <small>{activeChat.contactOneRole || 'Devonxona bo‘limi'}</small>
               </div>
             </div>
             <div className="chat-contact">
               <span className="chat-contact__avatar chat-contact__avatar--blue">KJ</span>
               <div>
-                <strong>Karimov Jahongir</strong>
-                <small>Axborot texnologiyalari</small>
+                <strong>{activeChat.contactTwo || 'Karimov Jahongir'}</strong>
+                <small>{activeChat.contactTwoRole || 'Axborot texnologiyalari'}</small>
               </div>
             </div>
           </section>
 
-          <a className="chat-details__phone" href="tel:+998712021100">
+          <a className="chat-details__phone" href={`tel:${activeChat.phone || '+998712021100'}`}>
             <span className="chat-details__phone-icon"><PhoneIcon /></span>
             <span>
               <small>Aloqa telefoni</small>
-              <strong>+998 71 202 11 00</strong>
+              <strong>{activeChat.phone ? activeChat.phone.replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, '+$1 $2 $3 $4 $5') : '+998 71 202 11 00'}</strong>
             </span>
           </a>
 
